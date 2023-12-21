@@ -2,6 +2,19 @@
 
 SOCKS_PORT=5555
 
+if [ -z "${VAR}" ]; then
+    echo "VAR is unset or set to the empty string"
+else
+    echo "VAR is set to some string"
+fi
+
+
+if [ -z "${VERBOSE}" ]; then
+  STD_REDIRECT=/dev/null
+else
+  STD_REDIRECT=/dev/stdout
+fi
+
 usage() {
   echo "USAGE: $0 [ install | start | stop | status ]"
   exit
@@ -11,14 +24,14 @@ start() {
   installed?
   ufw allow $SOCKS_PORT
   EXTERNAL_IP=`ifconfig eth0 | grep inet | awk '{print $2}' | head -n 1`
-  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP`
+  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
 }
 
 stop() {
   PID="$(pid)"
 
   if [[ $PID =~ ^[0-9]+$ ]]; then
-    `kill -9 $PID`
+    `kill -9 $PID > $STD_REDIRECT`
   fi
 }
 
@@ -33,11 +46,16 @@ status() {
 }
 
 install() {
-  sudo apt-get update > /dev/null
-  sudo apt-get upgrade > /dev/null
-  sudo apt-get install ufw
-  sudo ufw allow 22 > /dev/null
-  sudo ufw allow $SOCKS_PORT > /dev/null
+  `sudo apt-get update > $STD_REDIRECT`
+
+  `sudo apt-get upgrade > $STD_REDIRECT`
+
+  `sudo apt-get install ufw > $STD_REDIRECT`
+
+  `sudo ufw allow 22 > $STD_REDIRECT`
+
+  `sudo ufw allow $SOCKS_PORT > $STD_REDIRECT`
+  
   echo '[+] SOCKS INSTALLED. STARTING...'
   start
   status
@@ -55,7 +73,7 @@ installed?() {
   UFW_PORT_ALLOWED=`"ufw status | grep $SOCKS_PORT | grep -i allow | grep -i anywhere | wc -l"`
 
   if [ $UFW_PORT_ALLOWED < 2 ]; then
-    `"sudo ufw allow $PORT"`
+    `"sudo ufw allow $PORT > $STD_REDIRECT"`
     echo "[+] $PORT now accepts incomming connections"
   fi
 }
