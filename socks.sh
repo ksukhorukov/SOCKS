@@ -16,7 +16,7 @@ usage() {
 start() {
   installed?
   ufw allow $SOCKS_PORT
-  EXTERNAL_IP=`ifconfig eth0 | grep inet | awk '{print $2}' | head -n 1`
+  EXTERNAL_IP=`ifconfig eth0 | grep inet || echo 'nothing' | awk '{print $2}' | head -n 1`
   `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
 }
 
@@ -59,7 +59,7 @@ installed?() {
     echo '[+] FIREWALL INSTALLED'
   fi
 
-  UFW_PORT_ALLOWED=`"ufw status | grep $SOCKS_PORT | grep -i allow | grep -i anywhere | wc -l"`
+  UFW_PORT_ALLOWED=`ufw status | grep $SOCKS_PORT || echo 'nothing found' | grep -i allow || echo 'nothing found' | grep -i anywhere || echo 'nothing found' | wc -l`
 
   if [ $UFW_PORT_ALLOWED < 2 ]; then
     sudo ufw allow $PORT > $STD_REDIRECT
