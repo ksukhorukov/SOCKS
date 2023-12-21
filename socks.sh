@@ -2,17 +2,10 @@
 
 SOCKS_PORT=5555
 
-if [ -z "${VAR}" ]; then
-    echo "VAR is unset or set to the empty string"
-else
-    echo "VAR is set to some string"
-fi
-
-
 if [ -z "${VERBOSE}" ]; then
-  STD_REDIRECT=/dev/null
+  export STD_REDIRECT=/dev/null
 else
-  STD_REDIRECT=/dev/stdout
+  export STD_REDIRECT=/dev/stdout
 fi
 
 usage() {
