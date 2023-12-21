@@ -42,8 +42,8 @@ install() {
   sudo apt-get update -y > $STD_REDIRECT 
   sudo apt-get upgrade -y > $STD_REDIRECT
   sudo apt-get install ufw -y > $STD_REDIRECT
-  sudo ufw allow 22 
-  sudo ufw allow $SOCKS_PORT
+  sudo ufw allow 22 > $STD_REDIRECT
+  sudo ufw allow $SOCKS_PORT > $STD_REDIRECT
   
   echo '[+] SOCKS INSTALLED. STARTING...'
   start
