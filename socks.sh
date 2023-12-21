@@ -39,15 +39,11 @@ status() {
 }
 
 install() {
-  `sudo apt-get update > $STD_REDIRECT`
-
-  `sudo apt-get upgrade > $STD_REDIRECT`
-
-  `sudo apt-get install ufw > $STD_REDIRECT`
-
-  `sudo ufw allow 22 > $STD_REDIRECT`
-
-  `sudo ufw allow $SOCKS_PORT > $STD_REDIRECT`
+  sudo apt-get update -y > $STD_REDIRECT 
+  sudo apt-get upgrade -y > $STD_REDIRECT
+  sudo apt-get install ufw -y > $STD_REDIRECT
+  sudo ufw allow 22 
+  sudo ufw allow $SOCKS_PORT
   
   echo '[+] SOCKS INSTALLED. STARTING...'
   start
@@ -66,7 +62,7 @@ installed?() {
   UFW_PORT_ALLOWED=`"ufw status | grep $SOCKS_PORT | grep -i allow | grep -i anywhere | wc -l"`
 
   if [ $UFW_PORT_ALLOWED < 2 ]; then
-    `"sudo ufw allow $PORT > $STD_REDIRECT"`
+    sudo ufw allow $PORT > $STD_REDIRECT
     echo "[+] $PORT now accepts incomming connections"
   fi
 }
