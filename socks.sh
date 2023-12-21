@@ -2,11 +2,11 @@
 
 SOCKS_PORT=5555
 
+export STD_REDIRECT=/dev/stdout
+
 if [ -z "${VERBOSE}" ]; then
   export STD_REDIRECT=/dev/null
-else
-  export STD_REDIRECT=/dev/stdout
-fi
+fi 
 
 usage() {
   echo "USAGE: $0 [ install | start | stop | status ]"
