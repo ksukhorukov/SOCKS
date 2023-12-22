@@ -8,7 +8,11 @@ Debian or Ubuntu with kernel version >= 5.10.0
 
 # Usage 
 
-USAGE: ./socks.sh [ install | start | stop | status ]
+USAGE: 
+
+```
+./socks.sh [ install | start | stop | status ]
+```
 
 # Verbosity And Silent Modes
 
