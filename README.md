@@ -11,7 +11,7 @@
  - Debian or Ubuntu with kernel version >= 5.10.0
  - OpenSSH server 9.* or higher
 
-# INSTALL
+# SERVER INSTALL AND SETUP
 
 It will be installed automatically, but you can trigger installation procedure manually 
 using this command:
@@ -20,13 +20,48 @@ using this command:
 ./socks.sh install
 ```
 
-# USAGE
+Then you have to run your server:
 
 ```
 ./socks.sh [ install | start | stop | status ]
 ```
 
-# VERBOSE AND SILENT MODES
+Check the server status before using socks:
+
+```
+./socks.sh status
+```
+
+# HOW TO USE YOUR SOCKS5 SERVER
+
+In general case you have to configure your Internet to use SOCKS5 proxy address and port. 
+
+The default port is 5555
+
+For example, in Google Chrome, you can go to Settings > Advanced > System and click the checkbox next to 
+"Use a proxy server for your LAN." Then, enter the address and port of your SOCKS5 proxy server.
+
+How to use it MacOS?
+
+If you want to use SOCKS5 for everything on your Mac, you can simply configure it in Network Preferences. 
+Open Network Preferences, click on Advanced and then Proxies. and enter your username and password. 
+Click on OK and then Apply and that's it, your Mac will now use our SOCKS5 server to connect to the internet.
+
+# VERIFY THAT YOUR IP WAS HIDDEN
+
+You can go to some site that determines your location for instance this one:
+
+[https://whatismyipaddress.com](https://whatismyipaddress.com)
+
+The location of you should be termined as the location of your SOCKS5 server IP address and your 
+IP address should be the same as the ip IP address of the server where you have deployed the script
+
+For instance if you are located in the US and your server is in Europe, the aforementioned site will say
+that you are located in Europe if the script has been deployed correctly.
+
+# DEBUGGING
+
+There are several verbosity levels for debugging purposes.
 
 Silent mode turned on by dedault but you can make this script more verbose for instance for debugging purposes:
 
