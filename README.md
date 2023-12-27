@@ -53,7 +53,19 @@ USAGE: ./socks.sh [ install | start | stop | status ]
 
 In general case you have to configure your Internet to use SOCKS5 proxy address and port. 
 
-The default port is 5555
+** The default port is 5555 **
+
+You can change the default port by setting the special socks port variable called SOCKS_PORT:
+
+```
+export SOCKS_PORT=31337
+```
+
+or for the sake of simplicity just pass it during the server startup process:
+
+````
+user@air socks $ SOCKS_PORT=31337 ./socks.sh start 
+````
 
 For example, in Google Chrome, you can go to Settings > Advanced > System and click the checkbox next to 
 "Use a proxy server for your LAN." Then, enter the address and port of your SOCKS5 proxy server.
