@@ -1,6 +1,8 @@
 #!/bin/bash
 
-SOCKS_PORT=5555
+if [ -z $SOCKS_PORT ]; then 
+  SOCKS_PORT=5555
+fi
 
 export STD_REDIRECT=/dev/stdout
 
