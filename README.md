@@ -2,9 +2,14 @@
 
 ## SOCKS5 Proxy Server Management Script
 
+# DESCRIPTION
+
+
+
 # REQUIREMENTS
 
  - Debian or Ubuntu with kernel version >= 5.10.0
+ - OpenSSH server 9.* or higher
 
 # INSTALL
 
