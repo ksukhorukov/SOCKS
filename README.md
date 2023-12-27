@@ -1,4 +1,4 @@
-# SOCKS5 PROXY SERVER MANAGEMENT SCRIPT
+# SOCKS5 PROXY MANAGEMENT SCRIPT
 
 SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server. 
 
