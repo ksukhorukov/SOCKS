@@ -49,7 +49,7 @@ user@air socks % ./socks.sh
 USAGE: ./socks.sh [ install | start | stop | status ]
 ```
 
-# HOW TO USE YOUR SOCKS5 SERVER
+# HOW TO USE YOUR BRAND NEW SOCKS5 SERVER
 
 In general case you have to configure your Internet to use SOCKS5 proxy address and port. 
 
