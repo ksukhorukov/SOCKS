@@ -17,8 +17,8 @@ A SOCKS server accepts incoming client connection on TCP port 1080, as defined i
 
 # SERVER INSTALL AND SETUP
 
-It will be installed automatically, but you can trigger installation procedure manually 
-using this command:
+It will be installed automatically when you trigger the start from the first time, but you can launch installation procedure manually 
+even in advance using this command:
 
 ```
 ./socks.sh install
@@ -27,13 +27,26 @@ using this command:
 Then you have to run your server:
 
 ```
-./socks.sh [ install | start | stop | status ]
+./socks.sh start
 ```
 
-Check the server status before using socks:
+By default the script use 5555 and you can check the status of the server with the following command:
 
 ```
 ./socks.sh status
+```
+
+Command to stop the server:
+
+```
+./socks.sh stop
+```
+
+If you want to remind yourself available commands, just run the script without any parameters:
+
+```
+user@air socks % ./socks.sh 
+USAGE: ./socks.sh [ install | start | stop | status ]
 ```
 
 # HOW TO USE YOUR SOCKS5 SERVER
