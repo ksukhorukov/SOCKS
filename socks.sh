@@ -16,7 +16,7 @@ usage() {
 start() {
   installed?
   ufw allow $SOCKS_PORT
-  EXTERNAL_IP=`ifconfig eth0 | grep inet || echo 'nothing' | awk '{print $2}' | head -n 1`
+  EXTERNAL_IP=`hostname -I | awk '{print $1}'`
   `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
 }
 
