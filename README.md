@@ -1,10 +1,14 @@
-# SOCKS
+# SOCKS5 PROXY SERVER MANAGEMENT SCRIPT
 
-## SOCKS5 Proxy Server Management Script
+SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server. 
 
-# DESCRIPTION
+SOCKS5 optionally provides authentication so only authorized users may access a server. 
 
+Practically, a SOCKS server proxies TCP connections to an arbitrary IP address, and provides a means for UDP packets to be forwarded.
 
+SOCKS performs at Layer 5 of the OSI model (the session layer, an intermediate layer between the presentation layer and the transport layer). 
+
+A SOCKS server accepts incoming client connection on TCP port 1080, as defined in RFC 1928.
 
 # REQUIREMENTS
 
