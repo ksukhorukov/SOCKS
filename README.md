@@ -92,22 +92,16 @@ that you are located in Europe if the script has been deployed correctly.
 
 There are several verbosity levels for debugging purposes.
 
-Silent mode turned on by default but you can make this script more verbose for instance for debugging purposes:
+Verbose mode is turned on by default but you can make this script silent if you do not need any debugging information:
 
 ```
-export VERBOSE=1
+export VERBOSE=0
 ```
 
-In order to make it silent again just unset the verbose variable:
+In order to make it verbose again just unset the verbose variable:
 
 ```
 unset VERBOSE
-```
-
-or actualy, this command will be just enough for the one-time usage:
-
-```
-VERBOSE=1 ./socks.sh start
 ```
 
 ## [EOF]
