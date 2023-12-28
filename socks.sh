@@ -4,10 +4,10 @@ if [ -z $SOCKS_PORT ]; then
   SOCKS_PORT=5555
 fi
 
-export STD_REDIRECT=/dev/stdout
+export STD_REDIRECT=/dev/null
 
 if [ -z "${VERBOSE}" ]; then
-  export STD_REDIRECT=/dev/null
+  export STD_REDIRECT=/dev/stdout
 fi 
 
 usage() {
