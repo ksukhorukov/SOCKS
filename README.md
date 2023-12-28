@@ -8,7 +8,7 @@ Practically, a SOCKS server proxies TCP connections to an arbitrary IP address, 
 
 SOCKS performs at Layer 5 of the OSI model (the session layer, an intermediate layer between the presentation layer and the transport layer). 
 
-A SOCKS server accepts incoming client connection on TCP port 1080, as defined in RFC 1928.
+A SOCKS server by default is accepting incoming client connections on TCP port 1080, as defined in RFC 1928.
 
 # REQUIREMENTS
 
@@ -53,12 +53,24 @@ USAGE: ./socks.sh [ install | start | stop | status ]
 
 In general case you have to configure your Internet to use SOCKS5 proxy address and port. 
 
-The default port is 5555
+** The default port is 5555 **
+
+You can change the default port by setting the special socks port variable called SOCKS_PORT:
+
+```
+export SOCKS_PORT=31337
+```
+
+or for the sake of simplicity just pass it during the server startup process:
+
+````
+user@air socks $ SOCKS_PORT=31337 ./socks.sh start 
+````
 
 For example, in Google Chrome, you can go to Settings > Advanced > System and click the checkbox next to 
 "Use a proxy server for your LAN." Then, enter the address and port of your SOCKS5 proxy server.
 
-How to use it MacOS?
+How to use SOCKS under MacOS?
 
 If you want to use SOCKS5 for everything on your Mac, you can simply configure it in Network Preferences. 
 Open Network Preferences, click on Advanced and then Proxies. and enter your username and password. 
@@ -80,7 +92,7 @@ that you are located in Europe if the script has been deployed correctly.
 
 There are several verbosity levels for debugging purposes.
 
-Silent mode turned on by dedault but you can make this script more verbose for instance for debugging purposes:
+Silent mode turned on by default but you can make this script more verbose for instance for debugging purposes:
 
 ```
 export VERBOSE=1
@@ -92,10 +104,11 @@ In order to make it silent again just unset the verbose variable:
 unset VERBOSE
 ```
 
-or actualy, this command will be just enough fore the one-time usage:
+or actualy, this command will be just enough for the one-time usage:
 
 ```
 VERBOSE=1 ./socks.sh start
 ```
 
 ## [EOF]
+
