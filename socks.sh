@@ -25,6 +25,11 @@ if [ -z "${VERBOSE}" ]; then
   export STD_REDIRECT=/dev/stdout
 fi 
 
+pid() {
+  PID=`lsof -i :$SOCKS_PORT | awk {'print $2'} | head -n 2 | tail -n 1`
+  echo "$PID"
+}
+
 usage() {
   echo "USAGE: $0 [ install | start | stop | status ]"
   exit
@@ -46,7 +51,9 @@ stop() {
 }
 
 status() {
-  PID="$(pid)"
+  PID=$(pid)
+  echo "$PID"
+  exit
   if [[ $PID =~ ^[0-9]+$ ]]; then
     echo "STATUS: UP"
     exit
@@ -69,11 +76,18 @@ install() {
 }
 
 installed?() {
-  INSTALLED=`which ufw | wc -l`
+  INSTALLED=`which ufw`
 
-  if [ $INSTALLED == 0 ]; then
+  if [ -z $INSTALLED ]; then
     install
     echo '[+] FIREWALL INSTALLED'
+  fi
+
+  INSTALLED=`which ufw`
+
+  if [ -z $INSTALLED ]; then
+    echo '[-] ERROR! It was not possible to instal UFW'
+    exit
   fi
 
   UFW_PORT_ALLOWED=`ufw status | grep $SOCKS_PORT || echo 'nothing found' | grep -i allow || echo 'nothing found' | grep -i anywhere || echo 'nothing found' | wc -l`
@@ -82,11 +96,6 @@ installed?() {
     sudo ufw allow $PORT > $STD_REDIRECT
     echo "[+] $PORT now accepts incomming connections"
   fi
-}
-
-pid() {
-  PID=`lsof -i :$SOCKS_PORT | awk {'print $2'} | head -n 2 | tail -n 1`
-  echo "$PID"
 }
 
 if [ "$#" -ne 1 ]; then 
