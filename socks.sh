@@ -30,52 +30,7 @@ pid() {
   echo "$PID"
 }
 
-usage() {
-  echo "USAGE: $0 [ install | start | stop | status ]"
-  exit
-}
-
-start() {
-  installed?
-  ufw allow $SOCKS_PORT
-  EXTERNAL_IP=`hostname -I | awk '{print $1}'`
-  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
-}
-
-stop() {
-  PID="$(pid)"
-
-  if [[ $PID =~ ^[0-9]+$ ]]; then
-    `kill -9 $PID > $STD_REDIRECT`
-  fi
-}
-
-status() {
-  PID=$(pid)
-  echo "$PID"
-  exit
-  if [[ $PID =~ ^[0-9]+$ ]]; then
-    echo "STATUS: UP"
-    exit
-  fi
-
-  echo "STATUS: DOWN"
-}
-
-install() {
-  sudo apt-get update -y > $STD_REDIRECT 
-  sudo apt-get upgrade -y > $STD_REDIRECT
-  sudo apt-get install ufw -y > $STD_REDIRECT
-  sudo ufw allow 22 > $STD_REDIRECT
-  sudo ufw allow $SOCKS_PORT > $STD_REDIRECT
-  
-  echo '[+] SOCKS INSTALLED. STARTING...'
-  start
-  status
-  echo '[+] INSTALLATION COMPLETE'
-}
-
-installed?() {
+socks_are_installed() {
   INSTALLED=`which ufw`
 
   if [ -z $INSTALLED ]; then
@@ -96,6 +51,49 @@ installed?() {
     sudo ufw allow $PORT > $STD_REDIRECT
     echo "[+] $PORT now accepts incomming connections"
   fi
+}
+
+usage() {
+  echo "USAGE: $0 [ install | start | stop | status ]"
+  exit
+}
+
+start() {
+  socks_are_installed
+  ufw allow $SOCKS_PORT
+  EXTERNAL_IP=`hostname -I | awk '{print $1}'`
+  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
+}
+
+stop() {
+  PID="$(pid)"
+
+  if [[ $PID =~ ^[0-9]+$ ]]; then
+    `kill -9 $PID > $STD_REDIRECT`
+  fi
+}
+
+status() {
+  PID=$(pid)
+  if [[ $PID =~ ^[0-9]+$ ]]; then
+    echo "STATUS: UP"
+    exit
+  fi
+
+  echo "STATUS: DOWN"
+}
+
+install() {
+  sudo apt-get update -y > $STD_REDIRECT 
+  sudo apt-get upgrade -y > $STD_REDIRECT
+  sudo apt-get install ufw -y > $STD_REDIRECT
+  sudo ufw allow 22 > $STD_REDIRECT
+  sudo ufw allow $SOCKS_PORT > $STD_REDIRECT
+  
+  echo '[+] SOCKS INSTALLED. STARTING...'
+  start
+  status
+  echo '[+] INSTALLATION COMPLETE'
 }
 
 if [ "$#" -ne 1 ]; then 
