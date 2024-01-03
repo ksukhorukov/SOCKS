@@ -72,11 +72,16 @@ open_socks_tunnel() {
   `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
 }
 
+display_socket_info() {
+  echo -e "[~] SOCKS5 server is now running on $EXTERNAL_IP:$SOCKS_PORT"
+}
+
 start() {
   socks_are_installed
   allow_socks_port
   fetch_external_ip
   open_socks_tunnel
+  display_socket_info
 }
 
 stop() {
@@ -90,11 +95,13 @@ stop() {
 status() {
   PID=$(pid)
   if [[ $PID =~ ^[0-9]+$ ]]; then
-    echo "STATUS: UP"
+    fetch_external_ip
+    echo "[~] STATUS: UP"
+    display_socket_info
     exit
   fi
 
-  echo "STATUS: DOWN"
+  echo "[~] STATUS: DOWN"
 }
 
 install() {
