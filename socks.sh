@@ -73,7 +73,7 @@ open_socks_tunnel() {
 }
 
 display_socket_info() {
-  echo -e "[~] SOCKS5 server is now running on $EXTERNAL_IP:$SOCKS_PORT"
+  echo -e "[i] SOCKS5 server is now running on $EXTERNAL_IP:$SOCKS_PORT"
 }
 
 start() {
@@ -101,7 +101,7 @@ status() {
     exit
   fi
 
-  echo "[~] STATUS: DOWN"
+  echo "[i] STATUS: DOWN"
 }
 
 install() {
@@ -111,7 +111,7 @@ install() {
   sudo ufw allow 22 > $STD_REDIRECT
   sudo ufw allow $SOCKS_PORT > $STD_REDIRECT
   
-  echo '[+] SOCKS INSTALLED. STARTING...'
+  echo '[~] SOCKS INSTALLED. STARTING...'
   start
   status
   echo '[+] INSTALLATION COMPLETE'
