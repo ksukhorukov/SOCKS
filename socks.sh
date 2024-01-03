@@ -58,7 +58,7 @@ fi
 
 pid() {
   PID=`lsof -i :$SOCKS_PORT | awk {'print $2'} | head -n 2 | tail -n 1`
-  info "[i] PID: $PID"
+  echo $PID
 }
 
 socks_are_installed() {
