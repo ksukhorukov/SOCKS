@@ -26,23 +26,23 @@ PROFILE_FILE='UNDEFINED'
 MAJOR_VERSION_PART_REQUIRED=3
 
 out() {
-  echo -e "$PURPLE $1"
+  echo "$PURPLE $1"
 }
 
 info() {
-  echo -e "$BLUE $1"
+  echo "$BLUE $1"
 }
 
 white() {
-  echo -e "$WHITE $1"
+  echo "$WHITE $1"
 }
 
 success() {
-  echo -e "$GREEN $1"
+  echo "$GREEN $1"
 }
 
 error() {
-  echo -e "$RED $1"
+  echo "$RED $1"
   exit
 }
 
