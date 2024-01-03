@@ -58,11 +58,25 @@ usage() {
   exit
 }
 
+fetch_external_ip() {
+  export EXTERNAL_IP=`hostname -I | awk '{print $1}'`
+
+  return $EXTERNAL_IP
+}
+
+allow_socks_port() {
+  ufw allow $SOCKS_PORT
+}
+
+open_socks_tunnel() {
+  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
+}
+
 start() {
   socks_are_installed
-  ufw allow $SOCKS_PORT
-  EXTERNAL_IP=`hostname -I | awk '{print $1}'`
-  `ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP > $STD_REDIRECT`
+  allow_socks_port
+  fetch_external_ip
+  open_socks_tunnel
 }
 
 stop() {

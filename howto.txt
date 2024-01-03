@@ -1,125 +1,64 @@
-How to setup your own SOCKS5 proxy server?
-
+How to setup your own SOCKS5 proxy server?
+To make a long story short: use this script 
+But you have some time you can read this article in order to gain better understanding of it's guts… ok… let's say inner world :)
 There are some cases in life when you want to achieve anonymity, security, hide your ip address and stay incognito.
-
 VPN or SOCKS proxy can help you with this task.
-
 VPN is a popular service but it costs money to use it in general. You buy subscription on your smartphone or
 on the website that provides VPN services. Also there is an option of your personal VPN server deployment.
-But really not so many people have the expertise and knowledge to do it by himself. 
-
-Moreover, VPN is a good solution that can give you anonymity and encrypt traffic between your local workstation 
+But really not so many people have the expertise and knowledge to do it by himself.
+Moreover, VPN is a good solution that can give you anonymity and encrypt traffic between your local workstation 
 and the destination server, but it's heavy and initially was not designed just to be a method of anonymity provisioning.
-VPN was created in order to reach just one target - creation of virtual overlay network in order to stimulate physical network
+VPN was created in order to reach just one target - creation of virtual overlay network in order to stimulate physical network
 environment. And that's it. For instance you can can connect to remote network using VPN and work with this network as if it
-way the physical network in your organization. Good example is - your workstation at home and your network inside the office.
+way the physical network in your organization. Good example is - your workstation at home and your network inside the office.
 When you work from home, most probably you will use a VPN client in order to connect to your work environment in the office.
-In other cases you will not have access to the resources that you can use on your work e.g. intranet / mail / time tracker / tickets management system /etc. So VPN technology was initially designed for anonymity. It was designed for virtual networks creation. 
-
+In other cases you will not have access to the resources that you can use on your work e.g. intranet / mail / time tracker / tickets management system /etc. So VPN technology was initially designed for anonymity. It was designed for virtual networks creation.
 I hope that now it is clear why VPN is not the best solution for the proxy server.
-
 Another possible option is to use special proxy server software. And deploy this software on your server. One of the examples of such software
-is Squid. But Squid is heavy, it requires installation and not so easy to configure even for the experienced system administrators. 
-That is why I prefer not to have any mess with such software, however I have had successful experience of its configuration and even tuning.  
-
-Third option is utilization of SSH tunneling mechanism that is already available by default for almost all *nix and BSD servers. 
-For instance Debian, Ubuntu, MacOS, OpenBSD and FreeBSD. 
-
-Special script was created by me right for this purpose. 
-
+is Squid. But Squid is heavy, it requires installation and not so easy to configure even for the experienced system administrators. 
+That is why I prefer not to have any mess with such software, however I have had successful experience of its configuration and even tuning.
+Third option is utilization of SSH tunneling mechanism that is already available by default for almost all *nix and BSD servers. 
+For instance Debian, Ubuntu, MacOS, OpenBSD and FreeBSD.
+Special script was created by me right for this purpose:
 https://github.com/ksukhorukov/SOCKS
-
 This script automates installment of all necessary software like UFW firewall and helps you to deploy your own SOCKS5 server within a fraction of a minute.
-
 It utilize just one command behind the scene:
-
-ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP 
-
-This command is able to transform just a regular, general purpose *nix server into a SOCKS5 server that listens for incoming connection on the pre-specified port. By default we use port 5555. 
-
+ssh -g -f -N -D $SOCKS_PORT $EXTERNAL_IP
+This command is able to transform just a regular, general purpose *nix server into a SOCKS5 server that listens for incoming connection on the pre-specified port. By default we use port 5555.
 You can actually try to execute this command by hand:
-
 sudo ssh -g -f -N -D 5555 1.2.3.4
-
 Where 1.2.3.4 have to be replaced with your real external ip address.
-
 Then you can check if your server is successfully listens for incoming connection on this port using the following command:
-
-lsof -i :5555
-
+lsof -i :5555
 If you don't see any output then it means that the server is not running.
-
 If you see something like this:
-
-user@air Data $ lsof -i :5555
-COMMAND  PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-nc      1774 user    3u  IPv4 0x1a5521d2af1cd5d7      0t0  TCP *:personal-agent (LISTEN)
-
+user@air Data $ lsof -i :5555
+COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
+nc 1774 user 3u IPv4 0x1a5521d2af1cd5d7 0t0 TCP *:personal-agent (LISTEN)
 Then it means that the server successfully waits for the clients of our SOCKS5 proxy.
-
 The PID (process identification) is 1774.
-
 You can kill by hand with this command:
-
 $ sudo kill -9 1774
-
 Then you have to check PID status with help of ps command:
-
 ps ax | grep 1774
-
-'top' command leads to the same purposes, monitoring of the processes. But you have to go through the whole table with the linux processes. 
-
-Processes: 515 total, 2 running, 513 sleeping, 1853 threads                                                                                                                                        18:13:46
-Load Avg: 1.31, 1.35, 1.71  CPU usage: 2.14% user, 2.38% sys, 95.47% idle  SharedLibs: 962M resident, 145M data, 80M linkedit. MemRegions: 50509 total, 2544M resident, 729M private, 1757M shared.
-PhysMem: 13G used (1212M wired, 0B compressor), 2244M unused. VM: 196T vsize, 4729M framework vsize, 0(0) swapins, 0(0) swapouts. Networks: packets: 78820/42M in, 59018/15M out.
-Disks: 261377/4936M read, 240683/1728M written.
-
-PID   COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG  CMPR PGRP PPID STATE    BOOSTS         %CPU_ME %CPU_OTHRS UID  FAULTS  COW  MSGSENT  MSGRECV  SYSBSD   SYSMACH  CSW      PAGEI IDLEW   POWE
-381   WindowServer 11.2 02:33.44 18    6    1972  302M-  132M+ 0B   381  1    sleeping *0[1]          0.80294 0.15390    88   207984+ 8081 1133973+ 910119+  1539096+ 3310142+ 913369+  2764  10802+  11.8
-1456  Terminal     9.7  00:04.55 10    3    403   169M+  720K  0B   1456 1    sleeping *0[49]         0.28611 0.69499    502  48964+  301  35094+   6625+    96704+   73503+   19472+   472   64      9.7
-0     kernel_task  9.0  01:46.77 469/8 0    0     9840K  0B    0B   0    0    running   0[0]          0.00000 0.00000    0    34841   0    2568787+ 2112705+ 0        0        7998214+ 0     381042+ 0.0
-1904  top          3.7  00:00.28 1/1   0    27    6162K  0B    0B   1904 1787 running  *0[1]          0.00000 0.00000    0    3272+   86   177916+  88952+   11855+   106184+  66+      6     0       3.7
-854   UniversalCon 0.5  00:01.90 2     1    123   6929K+ 0B    0B   854  1    sleeping *0[1]          0.00000 0.00000    502  12515+  191  42094+   20985+   44436+   146425+  44618+   234   1       0.5
-462   airportd     0.3  00:31.99 8     6    306   10M    0B    0B   462  1    sleeping  0[223]        0.04416 0.00000    0    36281   170  136429+  81737+   811560+  203278+  206859+  590   129     0.3
-536   mds_stores   0.2  00:07.49 7     5    103   19M    0B    0B   536  1    sleeping *0[1]          0.00000 0.19081    0    28127+  134  6525+    5900+    135527+  15217+   39138+   3224  27      0.2
-
+'top' command leads to the same purposes, monitoring of the processes. But you have to go through the whole table with the linux processes.
 And it is not so convenient. That is why it is better use 'ps' command.
-
 Actually the script automates all operations.
-
-user@air socks $ ./socks.sh 
-USAGE: ./socks.sh [ install | start | stop | status ]
-
+user@air socks $ ./socks.sh 
+USAGE: ./socks.sh [ install | start | stop | status ]
 You can perform a force install, later on to start the server, check its status and later on stop your server.
-
 But if you just exit from the console, the server will be still running on the background.
-
-
 If you want to start the server and install it automatically, just run the following command:
-
 ./socks.sh start
-
 Then you can check it's status:
-
 ./socks.sh status
-
 And finally stop it:
-
 ./socks.sh stop
-
-Your server address will be the following: 
-
+Your server address will be the following:
 <your_external_ip>:<port>
-
-It is what we call sockets in the networking world. 
-
-You have to use this socket as the address of the SOCKS5 proxy server. 
-
+It is what we call sockets in the networking world.
+You have to use this socket as the address of the SOCKS5 proxy server.
 SOCKS5 proxy can be configured in the browser or in the system settings. Please use the documentation for your operating system in order to get to know better how to configure SOCKS5 proxy in your environment.
-
-When you configure your system or your browser and mention this fresh socket there - your connection will be encrypted and anonymous. Your real ip will be hidden, instead of this ip the destination server will see that ip address of your SOCKS5 proxy server.
-
+When you configure your system or your browser and mention this fresh socket there - your connection will be encrypted and anonymous. Your real ip will be hidden, instead of this ip the destination server will see that ip address of your SOCKS5 proxy server.
 That's it. As simple as that!
-
 I wish you happy, secure and safe browsing!
-
