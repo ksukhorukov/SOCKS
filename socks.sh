@@ -15,6 +15,37 @@
 
 #!/bin/bash
 
+PURPLE='\033[0;35m' 
+RED='\033[0;31m' 
+BLUE='\033[0;34m' 
+WHITE='\033[0;37m' 
+GREEN='\033[0;32m'  
+
+PROFILE_FILE='UNDEFINED'
+
+MAJOR_VERSION_PART_REQUIRED=3
+
+out() {
+  echo -e "$PURPLE $1"
+}
+
+info() {
+  echo -e "$BLUE $1"
+}
+
+white() {
+  echo -e "$WHITE $1"
+}
+
+success() {
+  echo -e "$GREEN $1"
+}
+
+error() {
+  echo -e "$RED $1"
+  exit
+}
+
 if [ -z $SOCKS_PORT ]; then 
   SOCKS_PORT=5555
 fi
@@ -27,7 +58,7 @@ fi
 
 pid() {
   PID=`lsof -i :$SOCKS_PORT | awk {'print $2'} | head -n 2 | tail -n 1`
-  echo "$PID"
+  info "[i] PID: $PID"
 }
 
 socks_are_installed() {
@@ -35,13 +66,13 @@ socks_are_installed() {
 
   if [ -z $INSTALLED ]; then
     install
-    echo '[+] FIREWALL INSTALLED'
+    success '[+] FIREWALL INSTALLED'
   fi
 
   INSTALLED=`which ufw`
 
   if [ -z $INSTALLED ]; then
-    echo '[-] ERROR! It was not possible to instal UFW'
+    error '[-] ERROR! It was not possible to instal UFW'
     exit
   fi
 
@@ -49,12 +80,12 @@ socks_are_installed() {
   
   if [[ -z $UFW_PORT_ALLOWED ]]; then
     sudo ufw allow $PORT > $STD_REDIRECT
-    echo "[+] $PORT now accepts incomming connections"
+    success "[+] $PORT now accepts incomming connections"
   fi
 }
 
 usage() {
-  echo "USAGE: $0 [ install | start | stop | status ]"
+  info "USAGE: $0 [ install | start | stop | status ]"
   exit
 }
 
@@ -71,7 +102,7 @@ open_socks_tunnel() {
 }
 
 display_socket_info() {
-  echo -e "[i] SOCKS5 server is now running on $EXTERNAL_IP:$SOCKS_PORT"
+  info "[i] SOCKS5 server is now running on $EXTERNAL_IP:$SOCKS_PORT"
 }
 
 start() {
@@ -94,12 +125,12 @@ status() {
   PID=$(pid)
   if [[ $PID =~ ^[0-9]+$ ]]; then
     fetch_external_ip
-    echo "[~] STATUS: UP"
+    info '[i] STATUS: UP'
     display_socket_info
     exit
   fi
 
-  echo "[i] STATUS: DOWN"
+  info '[i] STATUS: DOWN'
 }
 
 install() {
@@ -109,10 +140,10 @@ install() {
   sudo ufw allow 22 > $STD_REDIRECT
   sudo ufw allow $SOCKS_PORT > $STD_REDIRECT
   
-  echo '[~] SOCKS INSTALLED. STARTING...'
+  info '[~] REQUIREMENTS INSTALLED. STARTING...'
   start
   status
-  echo '[+] INSTALLATION COMPLETE'
+  success '[+] INSTALLATION COMPLETE'
 }
 
 if [ "$#" -ne 1 ]; then 
@@ -121,12 +152,12 @@ fi
 
 case $1 in 
   start)
-    echo '[~] STARTING...'
+    info '[~] STARTING...'
     start
     status
     ;;
   stop)
-    echo '[~] STOPPING...'
+    info '[~] STOPPING...'
     stop
     status
     ;;
