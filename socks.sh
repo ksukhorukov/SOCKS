@@ -110,7 +110,6 @@ start() {
   allow_socks_port
   fetch_external_ip
   open_socks_tunnel
-  display_socket_info
 }
 
 stop() {
