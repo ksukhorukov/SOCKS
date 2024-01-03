@@ -60,8 +60,6 @@ usage() {
 
 fetch_external_ip() {
   export EXTERNAL_IP=`hostname -I | awk '{print $1}'`
-
-  return $EXTERNAL_IP
 }
 
 allow_socks_port() {
