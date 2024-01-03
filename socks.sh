@@ -20,29 +20,30 @@ RED='\033[0;31m'
 BLUE='\033[0;34m' 
 WHITE='\033[0;37m' 
 GREEN='\033[0;32m'  
+DEFAULT_COLOR='\033[0m'
 
 PROFILE_FILE='UNDEFINED'
 
 MAJOR_VERSION_PART_REQUIRED=3
 
 out() {
-  echo -e "$PURPLE $1"
+  echo -e "$PURPLE$1$DEFAULT_COLOR"
 }
 
 info() {
-  echo -e "$BLUE $1"
+  echo -e "$BLUE$1$DEFAULT_COLOR"
 }
 
 white() {
-  echo -e "$WHITE $1"
+  echo -e "$WHITE$1$DEFAULT_COLOR"
 }
 
 success() {
-  echo -e "$GREEN $1"
+  echo -e "$GREEN$1$DEFAULT_COLOR"
 }
 
 error() {
-  echo -e "$RED $1"
+  echo -e "$RED$1$DEFAULT_COLOR"
   exit
 }
 
