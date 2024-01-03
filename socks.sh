@@ -125,12 +125,12 @@ status() {
   PID=$(pid)
   if [[ $PID =~ ^[0-9]+$ ]]; then
     fetch_external_ip
-    info '[i] STATUS: UP'
+    success '[+] STATUS: UP'
     display_socket_info
     exit
   fi
 
-  info '[i] STATUS: DOWN'
+  error '[-] STATUS: DOWN'
 }
 
 install() {
