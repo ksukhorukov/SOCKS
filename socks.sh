@@ -123,12 +123,12 @@ fi
 
 case $1 in 
   start)
-    echo 'STARTING...'
+    echo '[~] STARTING...'
     start
     status
     ;;
   stop)
-    echo 'STOPING...'
+    echo '[~] STOPING...'
     stop
     status
     ;;
