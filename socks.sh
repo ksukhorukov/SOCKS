@@ -128,7 +128,7 @@ case $1 in
     status
     ;;
   stop)
-    echo '[~] STOPING...'
+    echo '[~] STOPPING...'
     stop
     status
     ;;
