@@ -46,7 +46,7 @@ socks_are_installed() {
   fi
 
   UFW_PORT_ALLOWED=`ufw status | grep "$SOCKS_PORT" || echo 'nothing found' | grep -i allow || echo 'nothing found' | grep -i anywhere`
-  echo "ufw port allowed?: '$UFW_PORT_ALLOWED'"
+  
   if [[ -z $UFW_PORT_ALLOWED ]]; then
     sudo ufw allow $PORT > $STD_REDIRECT
     echo "[+] $PORT now accepts incomming connections"
